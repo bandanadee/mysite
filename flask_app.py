@@ -10,10 +10,6 @@ import constants
 app = Flask(__name__)
 
 @app.route('/')
-def hello_world():
-    return 'Hello from Bandanadee!'
-
-@app.route('/')
 def homepage():
     return render_template('index.html')
 
