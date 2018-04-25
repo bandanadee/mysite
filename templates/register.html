@@ -1,8 +1,8 @@
-<html>
-    <head>
-        <title>Register</title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-    </head>
+{% extends "base.html" %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
     <body>
         <div class="container">
         <h2>Register</h2>
@@ -61,5 +61,4 @@
                     <button type="reset" class="btn btn-secondary">Reset</button>
                 </div>
             </form>
-        </div>
-    </body>
+{% endblock %}
