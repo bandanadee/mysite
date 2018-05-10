@@ -7,13 +7,14 @@ from flask import render_template
 
 from flask_sqlalchemy import SQLAlchemy
 
-import constants
+from flask_bootstrap import Bootstrap
 
 app = Flask(__name__)
 
 app.config.from_object('config.BaseConfig')
 db = SQLAlchemy(app)
 
+Bootstrap(app)
 
 class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -54,7 +55,7 @@ def register():
 def top_ten_songs():
     songs = Song.query.all()
     return render_template('top_ten_songs.html',
-                            songs=constants.TOP_TEN_SONGS)
+                            songs=songs)
 
 
 if __name__ == '__main__':
