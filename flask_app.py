@@ -11,13 +11,23 @@ from flask_bootstrap import Bootstrap
 
 from flask_nav import Nav
 
+from flask_sslify import SSLify
+
 from flask_nav.elements import Navbar, Subgroup, View
 app = Flask(__name__)
+
+from flask_wtf import FlaskForm
+
+from wtforms import StringField, PasswordField, SubmitField
+
+from wtforms.validators import InputRequired, Email, Length
 
 app.config.from_object('config.BaseConfig')
 db = SQLAlchemy(app)
 
 Bootstrap(app)
+
+SSLify(app)
 
 class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -27,12 +37,21 @@ class Course(db.Model):
     resource_name = db.Column(db.String(80))
     resource_url = db.Column(db.String(300))
 
-
 class Song(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(80))
     artist_name = db.Column(db.String(80))
     youtube_url = db.Column(db.String(300))
+
+class RegistrationForm(FlaskForm):
+    username = StringField(
+        'Username', validators=[InputRequired(), Length(min=4, max=15)])
+    email = StringField(
+        'Email', validators=[InputRequired(), Email()])
+    password = PasswordField(
+        'Password', validators=[InputRequired(), Length(min=8, max=80)])
+    submit = SubmitField('Register')
+
 
 @app.route('/')
 def homepage():
