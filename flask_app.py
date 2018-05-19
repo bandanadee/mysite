@@ -121,6 +121,11 @@ def top_ten_songs():
     return render_template('top_ten_songs.html',
                             songs=songs)
 
+@app.route('/games')
+def games():
+    return render_template('games.html')
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -165,10 +170,12 @@ def create_navbar():
     about_me_view = View('About Me', 'about_me')
     class_schedule_view = View('Class Schedule', 'class_schedule')
     top_ten_songs_view = View('Top Ten Songs', 'top_ten_songs')
+    games_view = View('Games', 'games')
     misc_subgroup = Subgroup('Misc',
                              about_me_view,
                              class_schedule_view,
-                             top_ten_songs_view)
+                             top_ten_songs_view,
+                             games_view)
     if current_user.is_authenticated:
         return Navbar('MySite', home_view, posts_view, misc_subgroup, logout_view)
     else:
