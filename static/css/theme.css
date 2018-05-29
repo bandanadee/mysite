@@ -30,6 +30,9 @@ section,
 summary {
   display: block;
 }
+#about_me {
+    color: black;
+}
 audio,
 canvas,
 progress,

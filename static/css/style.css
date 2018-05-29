@@ -9,15 +9,37 @@ body {
     text-align: center;
 }
 
-h1, h2 {
-    font-size: 50;
-    color: rgb(102, 0, 51);
-    border: 15px dotted rgb(255, 255, 128);
-    padding: 10px 20px;
-    font-family: garamond;
-    padding: 20px;
+h1 {
+  color: white;
+  font-size: 42px;
+  font-weight: 600;
+  text-align: center;
 }
 
+h2 {
+  border: 1px dotted red;
+  color: red;
+  font-size: 14px;
+  line-height: 48px;
+  padding: 20px 30px;
+  margin: 30px 20px;
+  text-align: center;
+}
+
+h3 {
+  color: red;
+  font-size: 26px;
+  font-weight: 700;
+  padding: 20px 10px;
+}
+
+p {
+  color: grey;
+  font-size: 16px;
+  line-height: 48px;
+  margin-top: 60px;
+  padding: 10px 20px;
+}
 img {
     border: 8px dotted rgb(255, 255, 128);
     width: 350;
@@ -25,13 +47,6 @@ img {
     margin-bottom: 50px;
 }
 
-p {
-    rgb(230, 255, 230);
-    font-family: palatino;
-    background-color: white;
-    opacity: .85;
-    padding: 10px;
-}
 
 ul {
     rgb(230, 255, 230);

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block title %}Recommended Shows{% endblock %}
+{% block content %}
+<div class="container">
+<h3>Recommend a show!</h3>
+{{ wtf.quick_form(form, button_map={'submit':'primary'}) }}
+<h3>Shows:</h3>
+{% for show in shows %}
+<p>{{ show.body }}</p>
+{% endfor %}
+</div>
+{% endblock %}

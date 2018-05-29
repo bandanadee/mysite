@@ -17,15 +17,23 @@ from wtforms.validators import ValidationError
 from flask import flash
 from flask_login import LoginManager, UserMixin, current_user, login_user, logout_user
 from datetime import datetime
-
+from flask_gravatar import Gravatar
+from flask_wtf.file import FileField, FileRequired
+from werkzeug.utils import secure_filename
 
 app.config.from_object('config.BaseConfig')
-db = SQLAlchemy(app)
 login = LoginManager(app)
 
 Bootstrap(app)
 
 SSLify(app)
+
+db = SQLAlchemy(app)
+
+class Shows(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.String(280))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -59,6 +67,9 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[InputRequired()])
     submit = SubmitField('Sign in')
 
+class PhotoForm(FlaskForm):
+    photo = FileField(validators=[FileRequired()])
+
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(15))
@@ -80,6 +91,11 @@ class Post(db.Model):
 class PostForm(FlaskForm):
     message = StringField('Message', validators=[InputRequired(), Length(max=280)])
     submit = SubmitField('Post')
+
+class ShowForm(FlaskForm):
+    show = StringField('show', validators=[InputRequired(), Length(max=280)])
+    submit = SubmitField('Submit')
+
 
 @login.user_loader
 def load_user(user_id):
@@ -121,9 +137,9 @@ def top_ten_songs():
     return render_template('top_ten_songs.html',
                             songs=songs)
 
-@app.route('/games')
-def games():
-    return render_template('games.html')
+@app.route('/projects')
+def projects():
+    return render_template('projects.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -158,6 +174,18 @@ def posts():
         posts.append(new_post)
     return render_template('posts.html', form=form, posts=posts)
 
+@app.route('/shows', methods=['GET', 'POST'])
+def shows():
+    if not current_user.is_authenticated:
+        return redirect(url_for('login'))
+    form = ShowForm()
+    shows = Shows.query.filter_by(user_id=current_user.id).all()
+    if form.validate_on_submit():
+        new_show = Shows(user_id=current_user.id, body=form.show.data)
+        db.session.add(new_show)
+        db.session.commit()
+        shows.append(new_show)
+    return render_template('shows.html', form=form, shows=shows)
 
 nav = Nav(app)
 @nav.navigation('mysite_navbar')
@@ -170,16 +198,17 @@ def create_navbar():
     about_me_view = View('About Me', 'about_me')
     class_schedule_view = View('Class Schedule', 'class_schedule')
     top_ten_songs_view = View('Top Ten Songs', 'top_ten_songs')
-    games_view = View('Games', 'games')
+    projects_view = View('Projects', 'projects')
+    shows_view = View('Show Recommendations', 'shows')
     misc_subgroup = Subgroup('Misc',
                              about_me_view,
                              class_schedule_view,
                              top_ten_songs_view,
-                             games_view)
+                             projects_view)
     if current_user.is_authenticated:
-        return Navbar('MySite', home_view, posts_view, misc_subgroup, logout_view)
+        return Navbar('MySite', home_view, posts_view, shows_view, misc_subgroup, logout_view)
     else:
-        return Navbar('MySite', home_view, misc_subgroup, login_view, register_view)
+        return Navbar('MySite', home_view, shows_view, misc_subgroup, login_view, register_view)
 
 if __name__ == '__main__':
   db.create_all()

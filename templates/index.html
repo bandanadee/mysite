@@ -5,11 +5,18 @@
 {% if current_user.is_authenticated %}
 <p>Welcome, {{ current_user.username}}!</p>
 {% else %}
-<p>Welcome to MySite!</p>
+<p>Welcome to my site of random things!</p>
 {% endif %}
 <h3>Recent posts from users</h3>
+<table class="table table-stripped">
 {% for post in posts %}
-<div><p>{{ post.timestamp.strftime('%b %w, %Y') }}<br>{{ post.body }}</p></div>
+    <tr>
+        <td><img src=""</td>
+        <td>{{ post.body }}</td>
+        <td>{{ post.timestamp.strftime('%-I : %M %p') }}</td>
+        <td>{{ post.timestamp.strftime('%b %d, %Y') }}</td>
+    </tr>
 {% endfor %}
+</table>
 </div>
 {% endblock %}

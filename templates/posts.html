@@ -6,8 +6,14 @@
 <h3>Make a post</h3>
 {{ wtf.quick_form(form, button_map={'submit':'primary'}) }}
 <h3>Previous posts</h3>
+<table class="table table-stripped">
 {% for post in posts %}
-<p>{{ post.timestamp.strftime('%b %w, %Y') }}<br>{{ post.body }}</p>
+    <tr>
+        <td>{{ post.body }}</td>
+        <td>{{ post.timestamp.strftime('%-I : %M %p') }}</td>
+        <td>{{ post.timestamp.strftime('%b %d, %Y') }}</td>
+    </tr>
 {% endfor %}
+</table>
 </div>
 {% endblock %}
